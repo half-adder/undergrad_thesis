@@ -34,7 +34,8 @@ The quantification requires two images be taken of each pharynx --- one at 410nm
 
 Due to the cellular architecture of the pharynx, almost all of the variation in redox state follows the posterior-anterior axis. Thus, we can model the pharynx 1-dimensionally as the redox state along its posterior-anterior axis without losing significant information. Computationally, this is achieved by (1) estimating the centerline of the pharynx then (2) measuring the intensity of the images under this estimated centerline.
 
-As will be discussed, a fundamental limitation of this analysis arises when the animal moves in the time between capturing the first and second frame in the pair of images required for each animal. The aim of this thesis project was to improve the methods by which these centerline measurements were gathered and analyzed so as to reduce experimenter input and minimize errors introduced by this inter-frame movement. 
+As will be discussed, a fundamental limitation of this analysis arises when the animal moves in the time between capturing the first and second frame in the pair of images required for each animal. 
+% The aim of this thesis project was to improve the methods by which these centerline measurements were gathered and analyzed so as to reduce experimenter input and minimize errors introduced by this inter-frame movement. 
 
 %-------------------------------------------------------------------------------------
 %	SECTION 2
@@ -44,36 +45,38 @@ As will be discussed, a fundamental limitation of this analysis arises when the 
 
 The pharynx is the feeding muscle of the animal. It contracts along its anterior-posterior axis, functioning as a pump to bring in food. Animals are paralyzed prior to imaging with a 1mM solution of the actyl choline agonist levamisole. Even so, the pharyngeal muscle occasionally contracts. 
 
-This contraction poses a problem for analysis. Ordinarily, dividing intensities pixel-by-pixel is appropriate because the mapping between image space and physical space remains consistent between pairs of images. If the animal moves, however, a new mapping must be constructed for each image. To understand  why, consider Figure \ref{fig:ContractionsCartoon}.
+This contraction poses a problem for analysis. Ordinarily, dividing intensities pixel-by-pixel is appropriate because the mapping between image space and physical space remains consistent between pairs of images. If the animal moves, however, a new mapping must be constructed for each image. To understand  why, consider Figure \ref{fig:MovementCartoon}.
 
 \begin{figure}[ht]
     \centering
-    \includegraphics{Figures/rendered_files/contraction_cartoon}
+    \includegraphics{Figures/rendered_files/movement_cartoon}
     \decoRule
-    \caption[Pharyngeal contractions lead to boundary issues]{A cartoon shows how pharyngeal contractions lead to measurement boundary issues.}
-    \label{fig:ContractionsCartoon}
+    \caption[Pharyngeal contractions lead to boundary issues]{A cartoon shows the two most common modes of inter-frame movement. \textbf{A} Posterior bulb contractions lead to a shrink or stretch of the intensity profile. \textbf{B} Dorsal-ventral movement of the anterior tip leads to premature truncation of the intensity profile as the midline does not follow the curve.}
+    \label{fig:MovementCartoon}
 \end{figure}
 
 On the bottom we see the outline of the pharynx in each frame. The pharynx has contracted in one frame (red) and is elongated in the other (black). When the intensities along the posterior-anterior axis are plotted above, it is clear that the contraction has lead to unwanted compression of the intensity profile.
 
-Another common mode of interframe movement is represented similarly in Figure \ref{fig:DorsalVentralCartoon}. This is movement of the tip of the pharynx dorsal-ventrally. Dorsal-ventral tip movements result in a loss of information about the tip in one frame, as depicted in red.
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics{Figures/rendered_files/dorsalventral_cartoon}
-    \decoRule
-    \caption[Dorsal ventral movement of the tip of a pharynx]{A cartoon shows dorsal ventral movement in the tip of the pharynx and the resultant intensity profiles measuring under the single centerline.}
-    \label{fig:DorsalVentralCartoon}
-\end{figure}
+Another common mode of interframe movement is represented similarly in Figure \ref{fig:MovementCartoon}. This is movement of the tip of the pharynx dorsal-ventrally. Dorsal-ventral tip movements result in a loss of information about the tip in one frame, as depicted in red.
 
 The current method for dealing with these problems is to visually screen the ratio images for images with a highly textured appearence, as shown in figure \ref{fig:HighMovement}. These animals are then excluded from analysis. This visual screening is a time-intensive process, requires training, and is subject to experimenter error and bias.
 
 \begin{figure}[ht]
     \centering
-    \includegraphics{Figures/rendered_files/dorsalventral_cartoon}
+    \includegraphics[scale=0.3]{Figures/rendered_files/low_high_movement}
     \decoRule
-    \caption[Dorsal ventral movement of the tip of a pharynx]{A cartoon shows dorsal ventral movement in the tip of the pharynx and the resultant intensity profiles measuring under the single centerline.}
+    \caption[A ratio image reveals inter-frame movement]{Ratio images reveal inter-frame movement. Both images are the result of dividing one image taken at 410nm with a second at the same wavelength. The animal on the left did not move between frames while the animal on the right did.}
     \label{fig:HighMovement}
+\end{figure}
+
+A set of ratiometric images (collection described in \ref{testCollection}) was hand-classified according to the degree of movement (0 - 3) in four regions: the posterior bulb, anterior bulb, sides of the tip, and tip. Figure \ref{fig:RPosteriorMovement} shows the mean $I_{410}/I_{410}$ measured under the midline and colored by degree of movement in the posterior bulb. A ratio of 1 indicates no error.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.25]{Figures/rendered_files/R_posterior_movement}
+    \decoRule
+    \caption[Error by strategy in the natural data set]{Relative error}
+    \label{fig:RPosteriorMovement}
 \end{figure}
 
 \subsection{Segmentation and centerline estimation sometimes require manual input}\label{limitationManual}

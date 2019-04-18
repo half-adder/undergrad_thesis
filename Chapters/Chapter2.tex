@@ -35,23 +35,26 @@ For reasons described in \ref{TLMidlines}, an image taken with transmitted light
 %-------------------------------------------------------------------------------------
 %	SECTION 2
 %-------------------------------------------------------------------------------------
-\section{Flexible measurement boundaries allow for anterior-posterior movment} \label{channelSegmentation}
+\section{Flexible measurement boundaries account for anterior-posterior movment} \label{channelSegmentation}
 
-As described in \ref{limitations}, interframe movement is a large source of error.
+As described in \ref{limitations}, interframe movement is a large source of error. To understand why, consider the how the previous pipeline takes measurements. First, a single mask using the image taken at 410nm is computed. This mask is then applied to both the 410nm and 470nm images. Pixels corresponding to \texttt{1} in the mask retain their value while pixels corresponding to \texttt{0} in the mask are assigned the value \texttt{0}. Measurements are taken of the masked images. Thus, if the animal pumps, measuremnt might start in the gut or halfway through the posterior bulb, depending on if the animal contracted during the first or second frame. If the animal contracts during the first frame and extends in the second, the mask will be too "short" and measurement in the second frame will start in the middle of the posterior bulb. If the animal is extended in the first frame and contracts in the second, the mask will be too "long" and measurement in the second frame will start in the gut. This error is accounted for via visual inspection of ratio images so as to exclude those animals who have moved from analysis.
 
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=1.20]{Figures/rendered_files/new_boundaries_cartoon}
+    \decoRule
+    \caption[Flexible measurement boundaries]{A cartoon depicting the flexible measurement boundaries in the revised measurement pipeline}
+    \label{fig:NewBoundariesCartoon}
+\end{figure}
 
-The previous pipeline computes a single mask using the image taken at 410nm. This mask is then applied to both the 410nm and 470nm images. Measurements are taken of the masked image. Thus, if the animal pumps, measuremnt might start in the gut or halfway through the posterior bulb, depending on if the animal contracted during the first or second frame. If the animal contracts during the first frame and extends in the second, the mask will be too "short" and measurement in the second frame will start in the middle of the posterior bulb. If the animal is extended in the first frame and contracts in the second, the mask will be too "long" and measurement in the second frame will start in the gut.
-
-
-The new approach is to create channel-specific masks for the purposes of drawing midlines. This allows the measurement boundaries to change on a frame-by-frame basis. That is, measurements always start at the posterior bulb and end at the tip.
+The new approach (summarized graphically in Figure \ref{fig:NewBoundariesCartoon}) tries to account for this movement without the need for manual exclusion. Here, segmentation masks are not applied to the images before measurement as before. Instead, they are used only in the calculation of the midlines (described in \ref{Midlines}). Intensity profiles of the unmasked images are taken under the midlines. The intensity profiles are trimmed to the point where they cross a threshold then resized to the same length via linear interpolation. Allowing measurement boundaries to move flexibly is a simple yet effective change in reducing error introduced by inter-frame pharyngeal contractions.
 
 %-------------------------------------------------------------------------------------
 %	SECTION 3
 %-------------------------------------------------------------------------------------
-\section{Midlines} 
-\subsection{A transmitted light image helps to anchor the midlines} \label{TLMidlines}
+\section{Midlines} \label{Midlines}
 
-The previous centerline estimation algorithm takes as input an image of the pharynx aligned horizontally along its anterior posterior axis and works as follows (depicted in figure \ref{fig:oldMidline}).
+The previous centerline estimation algorithm takes as input an image of the segmented pharynx aligned horizontally along its anterior posterior axis and works as follows (depicted in figure \ref{fig:oldMidline}).
 
 \begin{figure}[ht]
     \centering
@@ -61,17 +64,21 @@ The previous centerline estimation algorithm takes as input an image of the phar
     \label{fig:oldMidline}
 \end{figure}
 
-Boxes are drawn at specific static coordinates. The centroid of each shape is calculated (red points). Lines (solid) connect these points. The y-coordinates of the terminating points (blue) is determined via the point-slope method $y=mx+b$ where $m$ is the inverse of the slope of the neighboring line, $x$ is a fixed constant and $b$ is the y-coordinate of the neighboring point.
-
-One problem 
-
-The current centerline estimation algorithm is unstable around the posterior bulb. These instabilities must be manually corrected. Fundamentally, this problem arises because the  
-
-\subsection{Dorsal-ventral movement of the tip is a problem} \label{frameSpecificMidlines}
-We saw in \ref{channelSegmentation} a strategy to combat the major mode of inter-frame movement, contractions of the posterior bulb. However, there is another less common mode: dorsal-ventral movement of the tip. 
+Boxes are drawn at specific static coordinates. The centroid of each shape is calculated (red points). Lines (solid) connect these points. The y-coordinates of the terminating points (blue) are determined via the point-slope method $y=mx+b$ where $m$ is the inverse of the slope of the neighboring line, $x$ is a fixed constant and $b$ is the y-coordinate of the neighboring point.
 
 
-Again, frame-specific measurements are key to addressing this problem. Instead of using a single midline derived from the first frame, we calculate the midline independently in each frame. This frame-specific midline is then used to take profile measurements.
+\subsection{A transmitted light image helps to anchor the midlines} \label{TLMidlines}
+A major problem faced by the current centerline estimation algorithm is instability around the posterior bulb. Small positional changes in the neighboring points cause the terminal point to move dramatically. These instabilities must be manually corrected.
+
+To address this concern, the new centerline estimation algorithm incorporates positional information from a transmitted-light image. The entire body of the worm is visible in transmitted light. We segment the transmitted light image with the algorithm described in \ref{segMethod}, resulting in a binary mask. This mask is combined with the pharyngeal mask by cuting off the transmitted-light mask when the pharyngeal mask starts. It is this combined mask that is fed into the centerline estimation algorithm. The points from the transmitted-light mask serve to constrain and anchor the previously unstable posterior-bulb region of the estimated centerline.
+
+\subsection{A spline-based centerline algorithm improves quality around the tip}
+The centerline estimation around the tip of the pharynx is subject to instabilities for similar reasons as discussed in \ref{TLMidlines}. In this case, the transmitted-light frame does not help as the body of the worm does not extend past the pharynx. To address this tip instability, a new centerline estimation algorithm was created.
+
+The method takes as input a binary image created via the methods described in \ref{TLMidlines}. Pixels with the value \texttt{1} are treated as points in 2D space. A smoothing B-spline is fit to these points, resulting in a continuous function. Spline parameters were chosen by visual inspection.
+
+\subsection{Dorsal-ventral tip movement is addressed with frame-specific midlines} \label{frameSpecificMidlines}
+We saw in \ref{channelSegmentation} a strategy to combat the major mode of inter-frame movement, contractions of the posterior bulb. However, there is another less common mode: dorsal-ventral movement of the tip. The spline algorithm described above allows the centerline to follow the curve of the tip without human intervention. To address inter-frame movement, the new pipeline draws a midline independently in each frame. These frame-specific midlines are used to take profile measurements.
 
 %-------------------------------------------------------------------------------------
 %	SECTION 4
