@@ -24,10 +24,20 @@ A large number of technical replicates were collected. A single animal was plate
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[scale=0.5]{Figures/rendered_files/test_imaging_schematic}
+    \includegraphics[scale=0.8]{Figures/rendered_files/test_imaging_schematic}
     \decoRule
     \caption[Test imaging schematic]{}
     \label{fig:TestImagingSchematic}
+\end{figure}
+
+A set of ratiometric images (collection described in \ref{testCollection}) was hand-classified according to the degree of movement (0 - 3) in four regions: the posterior bulb, anterior bulb, sides of the tip, and tip. Figure \ref{fig:RPosteriorMovement} shows the mean $I_{410}/I_{410}$ measured under the midline and colored by degree of movement in the posterior bulb. A ratio of 1 indicates no error.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.25]{Figures/rendered_files/R_posterior_movement}
+    \decoRule
+    \caption[Error by strategy in the natural data set]{Relative error}
+    \label{fig:RPosteriorMovement}
 \end{figure}
 
 %-------------------------------------------------------------------------------------
@@ -35,9 +45,7 @@ A large number of technical replicates were collected. A single animal was plate
 %-------------------------------------------------------------------------------------
 \section{A partially synthetic data set increases statistical power}
 
-Instead of comparing pairs of measurements taken back-to-back, we can compare all possible pairs. Given n images, we generate ${n \choose 2} = \frac{n!}{2!(n-2)!}$ pairs. Repeated excitation seems to attenuate the emission amplitude of the sensor (Figure \ref{fig:AvgIntensityOverTime}). To account for this effect (known as photobleaching) we generate pairs starting at the 15th imaged pair, and excluding outliers (Figure \ref{fig:AvgIntensityOverTime}).
-
-Since the average time between frames in this synthetic data set is 10 seconds\todo{do this calculation}, there is a large degree of inter-frame movement. Because the true test data has only 12 \todo{real number} pairs which display inter-frame movement, this partially synthetic data set allows us to be more confident about the changes in error seen using different analysis strategies.
+Instead of comparing pairs of measurements taken back-to-back, we can compare all possible pairs. Given n images, we generate ${n \choose 2} = \frac{n!}{2!(n-2)!}$ pairs. However, repeated excitation seems to attenuate the emission amplitude of the sensor (Figure \ref{fig:AvgIntensityOverTime}). To account for this effect (known as photobleaching) we generate pairs starting at the 15th imaged pair and exclude outliers (Figure \ref{fig:AvgIntensityOverTime}).
 
 \begin{figure}[ht]
     \centering
@@ -47,12 +55,23 @@ Since the average time between frames in this synthetic data set is 10 seconds\t
     \label{fig:AvgIntensityOverTime}
 \end{figure}
 
+Since the average time between frames in this synthetic data set is 10 seconds\todo{do this calculation}, there is a large degree of inter-frame movement. Because the true test data has only 12 \todo{real number} pairs which display inter-frame movement, this partially synthetic data set allows us to be more confident about the changes in error seen using different analysis strategies.
+
+
 %-------------------------------------------------------------------------------------
 %	SECTION 4
 %-------------------------------------------------------------------------------------
 \section{Reductions in Manual Intervention}
 
+\subsection{Incorporation of edge information increases segmentation accuracy}
+
+To compare the accuracy of segmentation methods, we first create a "gold-standard" set of images which were segmented by hand to ensure accuracy. The segmentation methods were applied to the same set of images and the resultant masks were compared via the total difference measure described in Yang et al. (A Supervised Approach to the Evaluation of Image Segmentation Methods).
+
 \todo[inline]{show figures comparing \% requiring manual intervention for segmentation and for midlines}
+
+\subsection{Incorporation of transmitted-light information increases centerline stability around the posterior bulb}
+
+To compare the stability of the centerline around the posterior bulb, we 
 
 %-------------------------------------------------------------------------------------
 %	SECTION 5
@@ -67,10 +86,10 @@ Since the average time between frames in this synthetic data set is 10 seconds\t
 %     \label{fig:PercentErrorNatural}
 % \end{figure}
 
-% \begin{figure}[ht]
-%     \centering
-%     \includegraphics[scale=0.15]{Figures/rendered_files/error_by_strategy_synthetic}
-%     \decoRule
-%     \caption[Error by strategy in the synthetic data set]{}
-%     \label{fig:PercentErrorSynthetic}
-% \end{figure}
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.15]{Figures/rendered_files/error_by_strategy_synthetic}
+    \decoRule
+    \caption[Error by strategy in the synthetic data set]{}
+    \label{fig:PercentErrorSynthetic}
+\end{figure}

@@ -8,34 +8,33 @@
 %	INTRODUCTION
 %-------------------------------------------------------------------------------------
 
-Oxidation and reduction (redox) reactions play a vital role in biology. These reactions are characterized by a flow of electrons between chemical species. The species gaining electrons is said to have been oxidized, while the species losing electrons is said to have been reduced. Redox reactions are involved in many vital processes such as cellular respiration, \todo{other processes}.
+Oxidation and reduction (redox) reactions play a vital role in biology. These reactions are characterized by a flow of electrons between chemical species. The species gaining electrons is said to have been oxidized, while the species losing electrons is said to have been reduced. Redox reactions are well-known to be involved in cellular respiration and metabolism more generally. More recently, redox control of the proteome has been the subject of great interest, mediating such events as differentiation and apoptosis. The oxidation of cysteine thiols to disulfide bonds provides an interface between redox chemistry and proteomic signal transduction.
 
-Many chemical species in the cell may exist in either an oxidized or reduced form. These \textit{redox couples} play central roles in a variety of cellular processes. The NAD\textsuperscript{{+}}/NADH couple, for example, shuttles high energy electrons wrought from the oxidation of sugars in the citric acid cycle to the proton pumps in the electron transport chain. The healthy cell actively maintains a steady-state disequilibrium of these redox couples. The overall state of this network of redox couples is called the \textit{redox state}. The impaired ability of the cell to regulate its redox state is termed \textit{oxidative stress} and is associated with a number of diseases such as cancer, various neurological disorders, and aging. Quantifying the redox state in live cells allows a deeper understanding of the regulatory mechanisms that mediate these processes.
+Many chemical species in the cell may exist in either an oxidized or reduced form. These pairs, termed \textit{redox couples} facilitate electron transfer in a variety of cellular processes. The \ce{NADH}/\ce{NAD+} couple, for example, transfers high energy electrons wrought from the oxidation of sugars in the citric acid cycle to \ce{O2} via oxidative phosphorylation.
+
+% The tripeptide glutathione (GSH/GSSG in its reduced/oxidized form) is thought to play a particularly important role in the redox environment of the cell. It exists at high concentrations (1-11 mM), and is believed to act as a central hub in the network of cellular redox reactions.
+
+The healthy cell actively maintains a steady-state disequilibrium of each of these redox couples. The "redox hypothesis" attributes aging and age-related disease to the misregulation of this network. Quantifying redox chemistry in live cells will allow for a deeper understanding of the regulatory mechanisms that mediate these vital processes.
 
 %-------------------------------------------------------------------------------------
 %	SECTION 1
 %-------------------------------------------------------------------------------------
 \section{Fluorescent biomarkers enable real-time quantification of cytosolic protein oxidation} \label{fluorescenceIntro}
-In a previous paper, our lab demonstrated the use of the redox-sensitive fluorescent protein roGFP to quantify the cytosolic redox state in the pharyngeal muscle of \textit{C. elegans} in real-time. The use of these biomarkers is leading to quantitative and mathematical models of the genetics and dynamics of intracellular and organismal-level redox signaling.
+In a previous paper, our lab demonstrated the use of the genetically-encoded redox-sensitive fluorescent protein roGFP1\_R12 to quantify the cytosolic redox state in the pharyngeal muscle of \textit{C. elegans} in real-time. These redox biosensors are leading to quantitative and mathematical models of the genetics and dynamics of intracellular and organismal-level redox signaling.
 
-The methodology relies on the dual emission spectra of the oxidized and reduced form of roGFP. By taking the ratio of emission intensity when excited at different wavelengths, we can use the Nernst equation to estimate the cellular redox state.
-
-The quantification requires two images be taken of each pharynx --- one at 410nm and another at 470nm. By dividing the brightness of the images pixel-by-pixel we can estimate the redox state at each position in two dimensions (Figure \ref{fig:ratioImageToE}).
+A key feature of the roGFP family of sensors is their ratiometric nature, which corrects for differential expression of the sensor, as well as cell thickness (Hanson 2004). Because the oxidized and reduced form of the protein have differing emission spectra, the emission intensity at differing excitation wavelengths may be used as estimates of concentration in the Nernst equation to estimate the sensor's reduction potential. Thanks to the transparent nature of \textit{C. elegans}, fluoresence micrographs reveal spatial reduction potentials at subcellular resolution (Figure \ref{fig:ratioImageToE}).
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[scale=1.5]{Figures/rendered_files/old_midline_algorithm}
+    \includegraphics[scale=.25]{Figures/rendered_files/ratios_to_e}
     \decoRule
     \caption[Ratios of images to redox state]{}
     \label{fig:ratioImageToE}
 \end{figure}
 
-\todo[inline]{replace fig this with the 410nm / 470nm => E}
-
 Due to the cellular architecture of the pharynx, almost all of the variation in redox state follows the posterior-anterior axis. Thus, we can model the pharynx 1-dimensionally as the redox state along its posterior-anterior axis without losing significant information. Computationally, this is achieved by (1) estimating the centerline of the pharynx then (2) measuring the intensity of the images under this estimated centerline.
 
 As will be discussed, a fundamental limitation of this analysis arises when the animal moves in the time between capturing the first and second frame in the pair of images required for each animal. 
-% The aim of this thesis project was to improve the methods by which these centerline measurements were gathered and analyzed so as to reduce experimenter input and minimize errors introduced by this inter-frame movement. 
 
 %-------------------------------------------------------------------------------------
 %	SECTION 2
@@ -43,9 +42,8 @@ As will be discussed, a fundamental limitation of this analysis arises when the 
 \section{Limitations of current pipeline} \label{limitations}
 \subsection{Inter-frame movement results in measurement error} \label{limitationMovement}
 
-The pharynx is the feeding muscle of the animal. It contracts along its anterior-posterior axis, functioning as a pump to bring in food. Animals are paralyzed prior to imaging with a 1mM solution of the actyl choline agonist levamisole. Even so, the pharyngeal muscle occasionally contracts. 
+The pharynx of \textit{C. elegans} acts as the animal's feeding muscle. It contracts along its anterior-posterior axis, functioning as a pump to bring in food. This contraction poses a problem for ratiometric analysis. Ordinarily, dividing intensities pixel-by-pixel is appropriate because pixel-coordinates in both images capture the same point in physical space. If the animal moves, however, the same point in space is represented by different pixel coordinates in the first and second image. To understand  why, consider Figure \ref{fig:MovementCartoon}.
 
-This contraction poses a problem for analysis. Ordinarily, dividing intensities pixel-by-pixel is appropriate because the mapping between image space and physical space remains consistent between pairs of images. If the animal moves, however, a new mapping must be constructed for each image. To understand  why, consider Figure \ref{fig:MovementCartoon}.
 
 \begin{figure}[ht]
     \centering
@@ -59,7 +57,7 @@ On the bottom we see the outline of the pharynx in each frame. The pharynx has c
 
 Another common mode of interframe movement is represented similarly in Figure \ref{fig:MovementCartoon}. This is movement of the tip of the pharynx dorsal-ventrally. Dorsal-ventral tip movements result in a loss of information about the tip in one frame, as depicted in red.
 
-The current method for dealing with these problems is to visually screen the ratio images for images with a highly textured appearence, as shown in figure \ref{fig:HighMovement}. These animals are then excluded from analysis. This visual screening is a time-intensive process, requires training, and is subject to experimenter error and bias.
+During imaging, animals are paralyzed with the actyl choline agonist levamisole. However, complete paralysis is not possible due to concentration limitations\todo{talk about limitations}. Inter-frame movement is currently addressed by visually screening the the ratio images for a highly textured appearence, as shown in Figure \ref{fig:HighMovement}. These animals are excluded from analysis. However, visual screening is a time-intensive process, requires training, and is subject to experimenter error and bias.
 
 \begin{figure}[ht]
     \centering
@@ -69,19 +67,9 @@ The current method for dealing with these problems is to visually screen the rat
     \label{fig:HighMovement}
 \end{figure}
 
-A set of ratiometric images (collection described in \ref{testCollection}) was hand-classified according to the degree of movement (0 - 3) in four regions: the posterior bulb, anterior bulb, sides of the tip, and tip. Figure \ref{fig:RPosteriorMovement} shows the mean $I_{410}/I_{410}$ measured under the midline and colored by degree of movement in the posterior bulb. A ratio of 1 indicates no error.
+\subsection{Segmentation and centerline estimation sometimes require manual input} \label{limitationManual}
 
-\begin{figure}[ht]
-    \centering
-    \includegraphics[scale=0.25]{Figures/rendered_files/R_posterior_movement}
-    \decoRule
-    \caption[Error by strategy in the natural data set]{Relative error}
-    \label{fig:RPosteriorMovement}
-\end{figure}
-
-\subsection{Segmentation and centerline estimation sometimes require manual input}\label{limitationManual}
-
-As noted, the visual screen for inter-frame movement is a manual step. Two other processes in the current pipeline also require manual supervision. The first is segmentation. Segmentation is the process by which pixels corresponding to objects in an image are given salient labels. In our case, the task is to separate the pharynx from everything else (Figure \ref{fig:SegmentationExample}). 
+As noted, the visual screen for inter-frame movement is a manual step. Two other processes in the current pipeline also require manual supervision. The first is segmentation. Segmentation is the process by which pixels corresponding to objects in an image are given salient labels. In this case, the task is to separate the pharynx from everything else (Figure \ref{fig:SegmentationExample}). 
 
 \begin{figure}[ht]
     \centering
@@ -91,15 +79,19 @@ As noted, the visual screen for inter-frame movement is a manual step. Two other
     \label{fig:SegmentationExample}
 \end{figure}
 
-Because the transgenic animals express roGFP with pharynx-specific promoters, the task is usually straightforward. However, the intenstine of \textit{C. elegans} autofluoresces in response to the wavelengths of light that we use. This poses a problem for the static thresholding algorithm currently used to segment the pharynx. This algorithm assigns any value greater than a threshold the value \texttt{1} and those below the threshold \texttt{0}. Static thresholds works well when the distribution of brightness is different for each class of object in the image, but this is not the case when the intestine autofluoresces resulting in ill-formed segmentation masks (Figure \ref{fig:SegmentationNaive}).
+Because the transgenic animals express roGFP with pharynx-specific promoters, most fluorescence occurs only in the region of interest. However, the intenstine of \textit{C. elegans} exhibits autofluorescence in response to the wavelengths of light required for roGFP excitation. This poses a problem for the static thresholding algorithm currently used to segment the pharynx. This algorithm assigns any value greater than a threshold the value \texttt{1} and those below the threshold \texttt{0}. Static thresholds work well when the distribution of brightness is different for each class of object in the image, but this is not the case when the intestine autofluoresces, resulting in ill-formed segmentation masks (Figure \ref{fig:SegmentationNaive}).
 
 \begin{figure}[ht]
     \centering
     \includegraphics[scale=.25]{Figures/rendered_files/segmentation_naive}
     \decoRule
-    \caption[The problem with static thresholding]{The problem with static thresholding. This image must be manually corrected.}
+    \caption[The problem with static thresholding]{The problem with static thresholding. Autofluorescent intestinal tissue results in a segmentation mask that must be manually corrected.}
     \label{fig:SegmentationNaive}
 \end{figure}
+
+As described in \ref{fluorescenceIntro}, the 1-dimensional model of the pharynx requires the accurate estimation of the tissue's centerline. While the current centerline estimation algorithm (described in \ref{Midlines}) works well in the interior regions of the pharynx, it is unstable around the terminal regions, both the anterior and posterior. These portions of the centerline must be visually inspected and corrected as well.
+
+\todo[inline]{figure of midline that needs correction}
 
 \section{Aims}
 This thesis aims to address the limitations of the current analysis pipeline described in \ref{limitationMovement} and \ref{limitationManual}. To achieve this, a new pipeline was written in MATLAB to process and analyze these images end-to-end with little to no necessary manual input. The improved pipeline decreases the time required to analyze this data, standardizes the analysis, reduces human error, and mitigates movement-induced error.
