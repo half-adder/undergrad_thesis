@@ -22,7 +22,7 @@ The healthy cell actively maintains a steady-state disequilibrium of each of the
 \section{Fluorescent biomarkers enable real-time quantification of cytosolic protein oxidation} \label{fluorescenceIntro}
 In a previous paper, our lab demonstrated the use of the genetically-encoded redox-sensitive fluorescent protein roGFP1\_R12 to quantify the cytosolic reduction potential in the pharyngeal muscle of \textit{C. elegans} in real-time \cite{cata2014}. These redox biosensors are leading to quantitative and mathematical models of the genetics and dynamics of intracellular and organismal-level redox signaling.
 
-A key feature of the roGFP family of sensors is their ratiometric nature, which corrects for differential expression of the sensor, as well as cell thickness \cite{hanson2004}. Because the oxidized and reduced form of the protein have differing emission spectra, the emission intensity at differing excitation wavelengths may be used as estimates of concentration in the Nernst equation to determine the sensor's reduction potential \cite{meyer2010}. Thanks to the transparent nature of \textit{C. elegans}, fluoresence micrographs reveal spatial reduction potentials at subcellular resolution (Figure \ref{fig:ratioImageToE}).
+A key feature of the roGFP family of sensors is their ratiometric nature, which corrects for differential expression of the sensor, as well as cell thickness \cite{hanson2004}. Because the oxidized and reduced form of the protein have differing emission spectra, the emission intensity at differing excitation wavelengths may be used as estimates of concentration in the Nernst equation to determine the sensor's reduction potential \cite{meyer2010}. Thanks to the transparent nature of \textit{C. elegans}, fluorescence micrographs reveal spatial reduction potentials at subcellular resolution (Figure \ref{fig:ratioImageToE}).
 
 \begin{figure}[ht]
     \centering
@@ -57,7 +57,7 @@ On the bottom we see the outline of the pharynx in each frame. The pharynx has c
 
 Another common mode of inter-frame movement, dorsoventrally at the anterior tip, is represented similarly in Figure \ref{fig:MovementCartoon}. Dorsoventral anterior tip movements result in a loss of information about the tip in one frame, as depicted in red.
 
-During imaging, animals are paralyzed with the actyl choline agonist levamisole. However, complete paralysis is not currently possible. Inter-frame movement is currently addressed by visually screening the the ratio images for a highly textured appearence, as shown in Figure \ref{fig:HighMovement}. These animals are then excluded from analysis. However, visual screening is a time-intensive process, requires training, and is subject to experimenter error and bias.
+During imaging, animals are paralyzed with the acetyl choline agonist levamisole. However, complete paralysis is not currently possible. Inter-frame movement is currently addressed by visually screening the the ratio images for a highly textured appearance, as shown in Figure \ref{fig:HighMovement}. These animals are then excluded from analysis. However, visual screening is a time-intensive process, requires training, and is subject to experimenter error and bias.
 
 \begin{figure}[ht]
     \centering
@@ -75,11 +75,11 @@ As noted, the visual screen for inter-frame movement is a manual step. Two other
     \centering
     \includegraphics[scale=.25]{Figures/rendered_files/segmentation_description}
     \decoRule
-    \caption[Segmentation of a fluorescence image]{The goal of segmentation. On the left, the original image showing fluorescence of roGFP in the pharynx and autofluorescence in the gut. On the right, a binary image consiting of value \texttt{1} in the pixels with a pharynx and value \texttt{0} elsewhere.}
+    \caption[Segmentation of a fluorescence image]{The goal of segmentation. On the left, the original image showing fluorescence of roGFP in the pharynx and autofluorescence in the gut. On the right, a binary image consisting of value \texttt{1} in the pixels with a pharynx and value \texttt{0} elsewhere.}
     \label{fig:SegmentationExample}
 \end{figure}
 
-Because the transgenic animals express roGFP with pharynx-specific promoters, most fluorescence occurs only in the region of interest. However, the intenstine of \textit{C. elegans} exhibits autofluorescence in response to the wavelengths of light required for roGFP excitation. This poses a problem for the static thresholding algorithm currently used to segment the pharynx. This algorithm assigns any value greater than a threshold the value \texttt{1} and those below the threshold \texttt{0}. Static thresholds work well when the distribution of brightness is different for each class of object in the image, but this is not the case when the intestine autofluoresces, resulting in ill-formed segmentation masks (Figure \ref{fig:SegmentationNaive}).
+Because the transgenic animals express roGFP with pharynx-specific promoters, most fluorescence occurs only in the region of interest. However, the intestine of \textit{C. elegans} exhibits autofluorescence in response to the wavelengths of light required for roGFP excitation. This poses a problem for the static thresholding algorithm currently used to segment the pharynx. This algorithm assigns any value greater than a threshold the value \texttt{1} and those below the threshold \texttt{0}. Static thresholds work well when the distribution of brightness is different for each class of object in the image, but this is not the case when the intestine autofluoresces, resulting in ill-formed segmentation masks (Figure \ref{fig:SegmentationNaive}).
 
 \begin{figure}[ht]
     \centering

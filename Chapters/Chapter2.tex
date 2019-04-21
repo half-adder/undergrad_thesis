@@ -10,7 +10,7 @@
 
 \section{Edge information helps to differentiate the pharynx from the intestine} \label{segMethod}
 
-As described in \ref{limitationManual}, intestinal autofluorescence causes the static thresholding algorithm to perform insufficiently in separating the pharynx from the rest of the animal and the background. Histogram-based threshold selection algorithms such as Otsu's method also perform poorly when the histgrams are not bimodal, as is the case with bright intestinal autofluorescence.
+As described in \ref{limitationManual}, intestinal autofluorescence causes the static thresholding algorithm to perform insufficiently in separating the pharynx from the rest of the animal and the background. Histogram-based threshold selection algorithms such as Otsu's method also perform poorly when the histograms are not bimodal, as is the case with bright intestinal autofluorescence.
 
 To address these issues, a new segmentation algorithm was developed. This algorithm exploits \textit{edges}, sharp changes in brightness which are information-rich regions in images. The Sobel-Feldman operator creates an image emphasizing edges by discretely differentiating the image in the vertical and horizontal directions (Figure \ref{fig:NewPipeline}). By thresholding the resultant image, using morphological operations to remove noise, and selecting the largest region, we isolate the pharynx from gut autofluorescence.
 
@@ -22,7 +22,7 @@ To address these issues, a new segmentation algorithm was developed. This algori
     \label{fig:NewPipeline}
 \end{figure}
 
-For reasons described in \ref{TLMidlines}, an image taken with transmitted light must also be segmented. Even though the distribution of intensities in transmitted light images are very different from fluorescence images, this edge-based segmentation algorithm still performs robustly (Figure \ref{fig:TLSeg}). This highlights another benefit of the improved method: image brightness independence. If one strain's pharynx fluoresces dimly, an edge-based segmentation method still performs well while the static threhsolding method requires the manual change of the threshold parameter.
+For reasons described in \ref{TLMidlines}, an image taken with transmitted light must also be segmented. Even though the distribution of intensities in transmitted light images are very different from fluorescence images, this edge-based segmentation algorithm still performs robustly (Figure \ref{fig:TLSeg}). This highlights another benefit of the improved method: image brightness independence. If one strain's pharynx fluoresces dimly, an edge-based segmentation method still performs well while the static thresholding method requires the manual change of the threshold parameter.
 
 \begin{figure}[ht]
     \centering
@@ -35,9 +35,9 @@ For reasons described in \ref{TLMidlines}, an image taken with transmitted light
 %-------------------------------------------------------------------------------------
 %	SECTION 2
 %-------------------------------------------------------------------------------------
-\section{Flexible measurement boundaries account for anterior-posterior movment} \label{channelSegmentation}
+\section{Flexible measurement boundaries account for anterior-posterior movement} \label{channelSegmentation}
 
-As described in \ref{limitations}, inter-frame movement is a large source of error. To understand why, consider the how the previous pipeline takes measurements. First, a single mask using the image taken at 410nm is computed. This mask is then applied to both the 410nm and 470nm images. Pixels corresponding to \texttt{1} in the mask retain their value while pixels corresponding to \texttt{0} in the mask are assigned the value \texttt{0}. Measurements are taken of the masked images. Thus, if the animal pumps, measuremnt might start in the gut or halfway through the posterior bulb, depending on if the animal contracted during the first or second frame. If the animal contracts during the first frame and extends in the second, the mask will be too "short" and measurement in the second frame will start in the middle of the posterior bulb. If the animal is extended in the first frame and contracts in the second, the mask will be too "long" and measurement in the second frame will start in the gut. This error is accounted for via visual inspection of ratio images so as to exclude those animals who have moved from analysis.
+As described in \ref{limitations}, inter-frame movement is a large source of error. To understand why, consider the how the previous pipeline takes measurements. First, a single mask using the image taken at 410 nm is computed. This mask is then applied to both the 410 nm and 470 nm images. Pixels corresponding to \texttt{1} in the mask retain their value while pixels corresponding to \texttt{0} in the mask are assigned the value \texttt{0}. Measurements are taken of the masked images. Thus, if the animal pumps, measurement might start in the gut or halfway through the posterior bulb, depending on if the animal contracted during the first or second frame. If the animal contracts during the first frame and extends in the second, the mask will be too "short" and measurement in the second frame will start in the middle of the posterior bulb. If the animal is extended in the first frame and contracts in the second, the mask will be too "long" and measurement in the second frame will start in the gut. This error is accounted for via visual inspection of ratio images so as to exclude those animals who have moved from analysis.
 
 \begin{figure}[ht]
     \centering

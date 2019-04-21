@@ -21,7 +21,7 @@ To assess the degree to which changes in the analysis pipeline affect the qualit
 \section{Collection of test data and baseline error quantification} \label{testCollection}
 
 A large number of technical replicates were collected in order to establish a baseline empirical estimation of error. A single animal was imaged 57 times in pairs of two, both frames at 410 nm. The ratio images were hand-classified according to the degree of movement (see Figure \ref{fig:HighMovement}) in four regions: the posterior bulb, anterior bulb, sides of the tip, and tip. 
-Figure \ref{fig:ErrorInOldPipeline} shows the average emperical error as a function of pharynx space, using the previous pipeline to estimate midlines and measure pixel intensities. At the boundaries of the pharynx, errors approach 75\% of the intensity, while errors are maximally around 10\% of the intensity in the interior regions of the pharynx. In animals that move, error tends to be larger, supporting the suggestion that inter-frame movement is a large source of error. Even in animals that do not move, errors can still reach 8\% in the interior regions of the  pharynx and increase dramatically at the boundaries.
+Figure \ref{fig:ErrorInOldPipeline} shows the average empirical error as a function of pharynx space, using the previous pipeline to estimate midlines and measure pixel intensities. At the boundaries of the pharynx, errors approach 75\% of the intensity, while errors are maximally around 10\% of the intensity in the interior regions of the pharynx. In animals that move, error tends to be larger, supporting the suggestion that inter-frame movement is a large source of error. Even in animals that do not move, errors can still reach 8\% in the interior regions of the  pharynx and increase dramatically at the boundaries.
 
 % A paired-sample t-test indicates no significant difference (p=0.41) between the first and second intensity profile.
 
@@ -48,7 +48,7 @@ Figure \ref{fig:ErrorInOldPipeline} shows the average emperical error as a funct
 %     \label{fig:AvgIntensityOverTime}
 % \end{figure}
 
-% The long average time between pairs in the synthetic data results in a large degree of inter-frame movement. While inter-frame movement is generally undeseriable, it is useful to artificially generate it to study the effect it has on measurement error. A drawback of the synthetic data set is the large scale precludes manual movement annotation, and changes in error cannot be stratified by degree of movement.
+% The long average time between pairs in the synthetic data results in a large degree of inter-frame movement. While inter-frame movement is generally undesirable, it is useful to artificially generate it to study the effect it has on measurement error. A drawback of the synthetic data set is the large scale precludes manual movement annotation, and changes in error cannot be stratified by degree of movement.
 
 %-------------------------------------------------------------------------------------
 %	SECTION 4
