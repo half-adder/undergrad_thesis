@@ -109,7 +109,7 @@ The goal of functional registration is to, given several curves with similar sha
     \label{fig:FunctionalRegistrationCartoon}
 \end{figure}
 
-Our pipeline uses the MATLAB packaged fdaM \todo{link here or citation} to perform functional registration. Discrete observations are \textit{functionalized} before registration takes place. Observations were functionalized by fitting a B-spline to the discrete intensity profile. The number of knots for the spline was chosen manually, and a roughness penalty was computed using the generalized cross-validation method. One of the desirable properties of B-spline fitting is that it smooths out noise. However, we aimed to understand how registration contributes to error reduction independently of spline smoothing. 
+Our pipeline uses the MATLAB package fdaM to perform functional registration. Discrete observations are \textit{functionalized} before registration takes place. Observations were functionalized by fitting a B-spline to the discrete intensity profile. The number of knots for the spline was chosen manually, and a roughness penalty was computed using the generalized cross-validation method. One of the desirable properties of B-spline fitting is that it smooths out noise. However, we aimed to understand how registration contributes to error reduction independently of spline smoothing. 
 
 To disentangle the effects of these operations, we register highly smoothed data to obtain a warp function, then apply that warp function to a "rough" fit of the data (Figure \ref{fig:SmoothRough}). The error is computed between the resultant warped "rough" functions.
 

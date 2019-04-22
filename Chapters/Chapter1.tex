@@ -20,7 +20,7 @@ The healthy cell actively maintains a steady-state disequilibrium of each of the
 %	SECTION 1
 %-------------------------------------------------------------------------------------
 \section{Fluorescent biomarkers enable real-time quantification of cytosolic protein oxidation} \label{fluorescenceIntro}
-In a previous paper, our lab demonstrated the use of the genetically-encoded redox-sensitive fluorescent protein roGFP1\_R12 to quantify the cytosolic reduction potential in the pharyngeal muscle of \textit{C. elegans} in real-time \cite{cata2014}. These redox biosensors are leading to quantitative and mathematical models of the genetics and dynamics of intracellular and organismal-level redox signaling.
+In a previous paper, our lab demonstrated the use of the genetically-encoded redox-sensitive fluorescent protein roGFP1\_R12 to quantify the cytosolic reduction potential in the pharyngeal muscle of \textit{C. elegans} in real-time \cite{romero-aristizabal2014}. These redox biosensors are leading to quantitative and mathematical models of the genetics and dynamics of intracellular and organismal-level redox signaling.
 
 A key feature of the roGFP family of sensors is their ratiometric nature, which corrects for differential expression of the sensor, as well as cell thickness \cite{hanson2004}. Because the oxidized and reduced form of the protein have differing emission spectra, the emission intensity at differing excitation wavelengths may be used as estimates of concentration in the Nernst equation to determine the sensor's reduction potential \cite{meyer2010}. Thanks to the transparent nature of \textit{C. elegans}, fluorescence micrographs reveal spatial reduction potentials at subcellular resolution (Figure \ref{fig:ratioImageToE}).
 
@@ -28,7 +28,7 @@ A key feature of the roGFP family of sensors is their ratiometric nature, which 
     \centering
     \includegraphics[scale=.25]{Figures/rendered_files/ratios_to_e}
     \decoRule
-    \caption[Ratios of images to reduction potential]{Pixel-by-pixel ratios are transformed into redox potentials revealing a spatial pattern.}
+    \caption[Ratios of images to reduction potential]{Pixel-by-pixel ratios are transformed into redox potentials revealing a spatial pattern, adapted from \cite{romero-aristizabal2014}}
     \label{fig:ratioImageToE}
 \end{figure}
 
@@ -61,13 +61,13 @@ During imaging, animals are paralyzed with the acetyl choline agonist levamisole
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[scale=0.3]{Figures/rendered_files/low_high_movement}
+    \includegraphics[scale=0.5]{Figures/rendered_files/movement_difference_images}
     \decoRule
-    \caption[A ratio image reveals inter-frame movement]{Ratio images reveal inter-frame movement. Both images are the result of dividing two images each taken at 410 nm. The animal on the left did not move between frames while the animal on the right did.}
+    \caption[Difference images reveal movement]{Signed difference images reveal inter-frame movement. Each image depicts the signed difference between the first and second image in a pair taken at $\lambda = 410 \text{ nm}$, colored using a perceptually-uniform diverging colormap, CET-D6 \cite{kovesi2015}. \textbf{A} a pair with minimal inter-frame movement. This pair is considered ideal. \textbf{B} a pair with a small amount of dorsoventral around the anterior tip. \textbf{C} a pair with a moderate amount of dorsoventral anterior movement \textbf{D} a pair with a substantial shift along the posterior-anterior axis. \textbf{E} a pair with substantial contractions in the posterior bulb and dorsoventral anterior movement. \textbf{F} a pair with substantial contractions in the posterior bulb and dramatic anterior movement}
     \label{fig:HighMovement}
 \end{figure}
 
-\subsection{Segmentation and centerline estimation sometimes require manual input} \label{limitationManual}
+\subsection{Segmentation and centerline estimation may require manual input} \label{limitationManual}
 
 As noted, the visual screen for inter-frame movement is a manual step. Two other processes in the current pipeline also require manual supervision. The first is segmentation. Segmentation is the process by which pixels corresponding to objects in an image are given salient labels. In this case, the task is to separate the pharynx from everything else (Figure \ref{fig:SegmentationExample}). 
 
